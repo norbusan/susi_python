@@ -44,12 +44,16 @@ def update_location(latitude, longitude, country_name, country_code):
     location['country_code'] = country_code
 
 
-def query(query_string):
+def query(query_string, sensors = None):
     params = {
         'q': query_string,
         'timezoneOffset': int(time.timezone/60),
         'device_type': 'Smart Speaker'
     }
+    if not sensors is None:
+        for k,v in sensors.items():
+            params['sensor.' + k] = v
+
     if access_token is not None:
         params['access_token'] = access_token
 
@@ -110,8 +114,8 @@ def generate_result(response):
     return result
 
 
-def ask(query_string):
-    response = query(query_string)
+def ask(query_string, sensors = None):
+    response = query(query_string, sensors)
     return generate_result(response)
 
 
